@@ -1,13 +1,15 @@
-//Author: Aaron O Neill
+#pragma once
+//Aaron O Neill
+//basic enemy that patrols 
 
+#include <iostream>
 #include <SFML/Graphics.hpp>
 
-#pragma once
-class EnemySpaceShip
+
+class PatrolEnemy
 {
 public:
-	EnemySpaceShip();
-	EnemySpaceShip(sf::Vector2f t_position);
+	PatrolEnemy();
 
 	//all the set and get functions
 	sf::RectangleShape getBody() { return tempBody; }

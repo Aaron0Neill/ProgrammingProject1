@@ -120,19 +120,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Asteroid.cpp" />
-    <ClCompile Include="EnemySpaceShip.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyVector2.cpp" />
+    <ClCompile Include="PatrolEnemy.cpp" />
     <ClCompile Include="PlayerSpaceShip.cpp" />
     <ClCompile Include="Shield.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Asteroid.h" />
-    <ClInclude Include="EnemySpaceShip.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="Globals.h" />
     <ClInclude Include="MyVector2.h" />
+    <ClInclude Include="PatrolEnemy.h" />
     <ClInclude Include="PlayerSpaceShip.h" />
     <ClInclude Include="Shield.h" />
   </ItemGroup>

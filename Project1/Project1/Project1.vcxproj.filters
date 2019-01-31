@@ -24,9 +24,6 @@
     <ClCompile Include="Asteroid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EnemySpaceShip.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerSpaceShip.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -34,6 +31,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MyVector2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PatrolEnemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,16 +47,13 @@
     <ClInclude Include="PlayerSpaceShip.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EnemySpaceShip.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Globals.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Shield.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MyVector2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PatrolEnemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

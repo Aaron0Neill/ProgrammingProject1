@@ -23,6 +23,6 @@ private:
 	float xPos; //x position of the shield
 	float yPos; //y position of the shield
 	float angle{ 0 };
-	float health{ 100 };
+	float health{ 255 };
 };
 

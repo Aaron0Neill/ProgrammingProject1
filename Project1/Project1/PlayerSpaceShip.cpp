@@ -4,9 +4,21 @@
 //default constuctor
 PlayerSpaceShip::PlayerSpaceShip()
 {
+	loadImage();
 	init();
 }
 
+
+void PlayerSpaceShip::loadImage()
+{
+	if (!bodyTexture.loadFromFile("assets//textures//SpaceShip.png"))
+	{
+		std::cout << "error loading player space ship";
+	}
+	body.setTexture(bodyTexture); //setup the sprite
+	body.setOrigin(body.getGlobalBounds().width / 2, body.getGlobalBounds().height / 2); //set the origin to the middle
+	body.setPosition(400, 300);
+}
 
 /// <summary>
 /// function that moves the player
@@ -31,9 +43,9 @@ void PlayerSpaceShip::move()
 	}
 	if (vectorLength(velocity) != 0)
 	{
+		std::cout << getPosition().x << " , " << getPosition().y << std::endl;
 		lookDirection = velocity;
 	}
-//	body.setRotation(angle);
 	body.move(velocity);
 	changeDirection();
 	velocity = sf::Vector2f(0, 0);
@@ -44,18 +56,9 @@ void PlayerSpaceShip::move()
 /// </summary>
 void PlayerSpaceShip::init()
 {
-	if (!bodyTexture.loadFromFile("assets//textures//SpaceShip.png"))
-	{
-		std::cout << "error loading player space ship";
-	}
 	lives = 2; // gives the player two lives to start off
 	health = 100; //the player starts with 100 health 
-	speed = 3; //default speed of 3
-	direction = 1; //sets the default direction to North
-	body.setTexture(bodyTexture); //setup the sprite
-	body.setOrigin(body.getGlobalBounds().width / 2, body.getGlobalBounds().height / 2); //set the origin to the middle
-//	body.scale(0.5f, 0.5f);
-	body.setPosition(400, 300);
+	speed = 5; //default speed of the player
 }
 
 /// <summary>
@@ -63,6 +66,14 @@ void PlayerSpaceShip::init()
 /// </summary>
 void PlayerSpaceShip::respawn()
 {
+}
+
+void PlayerSpaceShip::checkPosition()
+{
+	if (getPosition().x < -600 || getPosition().x > 1400 || getPosition().y < -700 || getPosition().y > 1300)
+	{
+		body.setPosition(400, 300);
+	}
 }
 
 void PlayerSpaceShip::changeDirection()

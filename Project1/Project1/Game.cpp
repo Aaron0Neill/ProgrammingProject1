@@ -9,7 +9,7 @@
 Game::Game() :
 	m_window{ sf::VideoMode{ 800, 600, 32 }, "SFML Game" },
 	m_exitGame{ false }, //when true game will exit
-	m_gameState{ splashScreen } //sets the game to default to the splash screen
+	m_currentState{ Splash } //sets the game to default to the splash screen
 {
 	setupFontAndText(); // load font 
 	setupSprite(); // load texture
@@ -61,11 +61,14 @@ void Game::processEvents()
 				m_exitGame = true;
 			}
 		}
-		if (m_gameState == splashScreen)
+		if (m_currentState == Splash)
 		{
 			if (sf::Event::KeyPressed == event.type)
 			{
-				m_gameState = inGame;
+				if (sf::Keyboard::Space == event.key.code)
+				{
+					m_currentState = GamePlay;
+				}
 			}
 		}
 	}
@@ -81,9 +84,11 @@ void Game::update(sf::Time t_deltaTime)
 	{
 		m_window.close();
 	}
+	
 	m_playerView.setCenter(m_player.getPosition()); //sets the center of the camer to the players position
 	m_playerView.move(m_player.getVelocity()); //moves the window
 	m_player.move(); //calls the function to move the player
+	m_player.checkPosition(); //checks to make sure the player isnt gone too far
 	m_playerShield.update(m_player.getPosition()); //calls the function to update the shield
 }
 
@@ -93,32 +98,56 @@ void Game::update(sf::Time t_deltaTime)
 void Game::render()
 {
 	m_window.clear();
-	if (m_gameState == splashScreen)
+	m_window.draw(m_background); //draws the background
+	if (m_currentState == Splash) //checks what state the game is in
 	{
-		m_window.draw(m_title);
+		m_window.draw(m_title); //displays the title
+		m_window.draw(m_asteroidText); //displays the informational text
+		m_window.draw(m_continueText); //displays the text saying what button to push
 	}
-	m_window.setView(m_playerView);
-	m_window.draw(m_player.getBody());
-	m_window.draw(m_playerShield.getBody());
-	m_window.draw(m_enemy.getBody());
+	m_window.setView(m_playerView); //sets the view to be the player
+	m_window.draw(m_playerShield.getBody()); //draws the shield object
+	m_window.draw(m_player.getBody()); //draws the player object
+	m_window.draw(m_asteroid.getBody()); //draws the asteroid object
 
 	m_window.display();
 }
+
+
 
 /// <summary>
 /// load the font and setup the text message for screen
 /// </summary>
 void Game::setupFontAndText()
 {
-	if (!m_titleFont.loadFromFile("assets//fonts//Starjhol.ttf") && m_mainFont.loadFromFile("assets//fonts//Starjedi.ttf"))
+	//main title screen
+	/**************************************************************************************************************************************/
+	if (!m_titleFont.loadFromFile("assets//fonts//Starjhol.ttf")) //loads fonts
 	{
-		std::cout << "font failure\n";
+		std::cout << "title font failure";
+	}
+	if (!m_mainFont.loadFromFile("assets//fonts//Starjedi.ttf"))
+	{
+		std::cout << "main font failure";
 	}
 	m_title.setFont(m_titleFont); //gives the title its font
 	m_title.setCharacterSize(28); //sets the size of the text
-	m_title.setString("\t\t  Space Survival\nPress any button to continue");
+	m_title.setString("Space Survival"); //sets the string for the splash screen
 	m_title.setOrigin(m_title.getGlobalBounds().width / 2, m_title.getGlobalBounds().height / 2); //sets the origin of the text to the middle
 	m_title.setPosition(400, 100); //sets the position to slightly above the middle of the screen
+	m_title.setFillColor(sf::Color::Yellow);
+
+	//continue text
+	/**************************************************************************************************************************************/
+	m_continueText.setFont(m_mainFont);
+	m_continueText.setCharacterSize(20);
+	m_continueText.setString("Press Space to continue");
+	m_continueText.setOrigin(m_continueText.getGlobalBounds().width / 2, m_continueText.getGlobalBounds().height / 2);
+	m_continueText.setPosition(400, 500);
+	m_continueText.setFillColor(sf::Color::Yellow);
+
+	//instructional asteroid text
+	/**************************************************************************************************************************************/
 
 }
 
@@ -127,5 +156,16 @@ void Game::setupFontAndText()
 /// </summary>
 void Game::setupSprite()
 {
-	
+	//background
+/*************************************************************************************************************************************/
+	if (!m_backgroundTexture.loadFromFile("assets//textures//spacelarge.png")) //loads the background texture
+	{
+		std::cout << "error loading space backgroud";
+	}
+	m_background.setTexture(m_backgroundTexture); //gives the sprite the texture
+	m_background.setOrigin(m_background.getGlobalBounds().width / 2 , m_background.getGlobalBounds().height / 2); //sets the origin to the middle of the sprite
+	m_background.setPosition(m_player.getPosition()); //sets the middle of the background to the players position
+
 }
+
+

@@ -19,10 +19,12 @@ public:
 
 
 	//all the movement functions
+	void loadImage();
 	void move();
 	void changeDirection();
 	void init();
 	void respawn();
+	void checkPosition();
 
 private:
 	sf::Texture bodyTexture; //body texture
@@ -30,11 +32,9 @@ private:
 	sf::Vector2f velocity; //speed at which the sprite moves
 	sf::Vector2f lookDirection; //direction the spaceship is facing
 
-	float direction;
-	float lives;
-	float speed;
-	float health;
-	float angle{ 0 };
+	float lives; //number of lives that the player has
+	float speed; //speed that the player can move at 
+	float health; //health that the player has
 	bool alive{ true }; //used to detect if the player was killed or not
 
 };
