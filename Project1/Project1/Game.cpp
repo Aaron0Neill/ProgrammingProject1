@@ -68,6 +68,7 @@ void Game::processEvents()
 				if (sf::Keyboard::Space == event.key.code)
 				{
 					m_currentState = GamePlay;
+					m_asteroid.init();
 				}
 			}
 		}
@@ -104,8 +105,11 @@ void Game::render()
 		m_window.draw(m_title); //displays the title
 		m_window.draw(m_asteroidText); //displays the informational text
 		m_window.draw(m_continueText); //displays the text saying what button to push
+		m_window.draw(m_controls); //displays the keys used to move
+		m_window.draw(m_controlsText); //displays the text to explain the controls
+
 	}
-	m_window.setView(m_playerView); //sets the view to be the player
+//	m_window.setView(m_playerView); //sets the view to be the player
 	m_window.draw(m_playerShield.getBody()); //draws the shield object
 	m_window.draw(m_player.getBody()); //draws the player object
 	m_window.draw(m_asteroid.getBody()); //draws the asteroid object
@@ -131,23 +135,39 @@ void Game::setupFontAndText()
 		std::cout << "main font failure";
 	}
 	m_title.setFont(m_titleFont); //gives the title its font
-	m_title.setCharacterSize(28); //sets the size of the text
+	m_title.setCharacterSize(32); //sets the size of the text
 	m_title.setString("Space Survival"); //sets the string for the splash screen
 	m_title.setOrigin(m_title.getGlobalBounds().width / 2, m_title.getGlobalBounds().height / 2); //sets the origin of the text to the middle
 	m_title.setPosition(400, 100); //sets the position to slightly above the middle of the screen
-	m_title.setFillColor(sf::Color::Yellow);
+	m_title.setFillColor(m_textColour);
 
 	//continue text
 	/**************************************************************************************************************************************/
 	m_continueText.setFont(m_mainFont);
-	m_continueText.setCharacterSize(20);
+	m_continueText.setCharacterSize(24);
 	m_continueText.setString("Press Space to continue");
 	m_continueText.setOrigin(m_continueText.getGlobalBounds().width / 2, m_continueText.getGlobalBounds().height / 2);
 	m_continueText.setPosition(400, 500);
-	m_continueText.setFillColor(sf::Color::Yellow);
+	m_continueText.setFillColor(m_textColour);
 
 	//instructional asteroid text
 	/**************************************************************************************************************************************/
+	m_asteroidText.setFont(m_mainFont);
+	m_asteroidText.setCharacterSize(14);
+	m_asteroidText.setString("These are asteroids \nthat float through space \nThey will cause damage \nif you collide with them");
+	m_asteroidText.setOrigin(m_asteroidText.getGlobalBounds().width / 2.0, m_asteroidText.getGlobalBounds().height / 2.0);
+	m_asteroidText.setPosition(m_asteroid.getPosition().x , m_asteroid.getPosition().y + (m_asteroid.getBody().getGlobalBounds().height / 2.0));
+	m_asteroidText.setFillColor(m_textColour);
+
+	//controls text
+	/**************************************************************************************************************************************/
+	m_controlsText.setFont(m_mainFont);
+	m_controlsText.setCharacterSize(14);
+	m_controlsText.setString("These are the keys\nyou use to move\nup, down, left and right\nuse the spacebar to fire");
+	m_controlsText.setOrigin(m_controlsText.getGlobalBounds().width / 2.0, m_controlsText.getGlobalBounds().height / 2.0);
+	m_controlsText.setPosition(675,450);
+	m_controlsText.setFillColor(m_textColour);
+
 
 }
 
@@ -165,6 +185,14 @@ void Game::setupSprite()
 	m_background.setTexture(m_backgroundTexture); //gives the sprite the texture
 	m_background.setOrigin(m_background.getGlobalBounds().width / 2 , m_background.getGlobalBounds().height / 2); //sets the origin to the middle of the sprite
 	m_background.setPosition(m_player.getPosition()); //sets the middle of the background to the players position
+
+	if (!m_controlsTexture.loadFromFile("assets//textures//WASDKeys.png"))
+	{
+		std::cout << "Error loading controls";
+	}
+	m_controls.setTexture(m_controlsTexture);
+	m_controls.setOrigin(m_controls.getGlobalBounds().width / 2.0, m_controls.getGlobalBounds().height / 2.0);
+	m_controls.setPosition(650, 350);
 
 }
 

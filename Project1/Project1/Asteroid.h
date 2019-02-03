@@ -8,7 +8,7 @@ class Asteroid
 {
 public:
 	Asteroid();
-	void loadImage();
+	void setupSplash();
 	void init();
 	void move();
 	inline sf::Sprite getBody() { return asteroid; }

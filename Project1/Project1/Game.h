@@ -51,6 +51,9 @@ private:
 	sf::Texture m_backgroundTexture; //texture for the background image
 	sf::Sprite m_background; 
 
+	sf::Texture m_controlsTexture; //texture to show player what the controls are
+	sf::Sprite m_controls;
+
 	//font and text
 	sf::Font m_mainFont; // font used by message
 	sf::Font m_titleFont; // font used for the main title
@@ -58,6 +61,10 @@ private:
 	sf::Text m_asteroidText; //text that displays what the asteroid is
 	sf::Text m_enemyText; //text that dispalys to explain the enemy
 	sf::Text m_continueText; //tells the player what button to push to continue
+	sf::Text m_controlsText; //text that informs the player of what the controls are
+
+	//colour of the text
+	sf::Color m_textColour = sf::Color::Yellow; //used to control the colour of all text objects
 
 	bool m_exitGame; // control exiting game
 
