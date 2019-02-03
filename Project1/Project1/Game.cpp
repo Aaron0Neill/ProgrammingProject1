@@ -193,7 +193,6 @@ void Game::setupSprite()
 	m_controls.setTexture(m_controlsTexture);
 	m_controls.setOrigin(m_controls.getGlobalBounds().width / 2.0, m_controls.getGlobalBounds().height / 2.0);
 	m_controls.setPosition(650, 350);
-
 }
 
 
