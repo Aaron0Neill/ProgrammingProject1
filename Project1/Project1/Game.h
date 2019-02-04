@@ -39,8 +39,10 @@ private:
 	GameState m_currentState;
 
 	PlayerSpaceShip m_player; //main player object
+	PatrolEnemy m_patrolEnemy; //patrol enemy object
 	Shield m_playerShield; //players shield
-	Asteroid m_asteroid;
+	Shield m_enemyShield; //patrol enemy shield
+	Asteroid m_asteroid; //asteroid object
 
 	sf::View m_playerView; //camera that follows the player
 	sf::RenderWindow m_window; //main render window

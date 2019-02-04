@@ -69,6 +69,7 @@ void Game::processEvents()
 				{
 					m_currentState = GamePlay;
 					m_asteroid.init();
+					m_patrolEnemy.init();
 				}
 			}
 		}
@@ -85,11 +86,14 @@ void Game::update(sf::Time t_deltaTime)
 	{
 		m_window.close();
 	}
-	
-	m_playerView.setCenter(m_player.getPosition()); //sets the center of the camer to the players position
-	m_playerView.move(m_player.getVelocity()); //moves the window
-	m_player.move(); //calls the function to move the player
-	m_player.checkPosition(); //checks to make sure the player isnt gone too far
+	if (m_currentState == GamePlay)
+	{
+		m_playerView.setCenter(m_player.getPosition()); //sets the center of the camer to the players position
+		m_playerView.move(m_player.getVelocity()); //moves the window
+		m_player.checkPosition(); //checks to make sure the player isnt gone too far
+		m_patrolEnemy.move();
+	}
+	m_player.move(); //calls the function to move the playera
 	m_playerShield.update(m_player.getPosition()); //calls the function to update the shield
 }
 
@@ -107,12 +111,14 @@ void Game::render()
 		m_window.draw(m_continueText); //displays the text saying what button to push
 		m_window.draw(m_controls); //displays the keys used to move
 		m_window.draw(m_controlsText); //displays the text to explain the controls
+		m_window.draw(m_enemyText); //displays the information on the enemy
 
 	}
 //	m_window.setView(m_playerView); //sets the view to be the player
+	m_window.draw(m_asteroid.getBody()); //draws the asteroid object
+	m_window.draw(m_patrolEnemy.getBody()); //draws the enemy object
 	m_window.draw(m_playerShield.getBody()); //draws the shield object
 	m_window.draw(m_player.getBody()); //draws the player object
-	m_window.draw(m_asteroid.getBody()); //draws the asteroid object
 
 	m_window.display();
 }
@@ -167,6 +173,14 @@ void Game::setupFontAndText()
 	m_controlsText.setOrigin(m_controlsText.getGlobalBounds().width / 2.0, m_controlsText.getGlobalBounds().height / 2.0);
 	m_controlsText.setPosition(675,450);
 	m_controlsText.setFillColor(m_textColour);
+
+	//enemy text
+	m_enemyText.setFont(m_mainFont);
+	m_enemyText.setCharacterSize(14);
+	m_enemyText.setString("These are enemies\nthat randomly move\naround the screen and will\nshoot at you if you get\ntoo close");
+	m_enemyText.setOrigin(m_enemyText.getGlobalBounds().width / 2.0, m_enemyText.getGlobalBounds().height / 2.0);
+	m_enemyText.setPosition((m_enemyText.getGlobalBounds().width / 2.0) + 50, 350);
+	m_enemyText.setFillColor(m_textColour);
 
 
 }

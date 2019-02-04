@@ -4,6 +4,10 @@
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include "MyVector2.h"
+#include <cstdlib>
+#include <time.h>
+#include <math.h>
 
 
 class PatrolEnemy
@@ -12,22 +16,28 @@ public:
 	PatrolEnemy();
 
 	//all the set and get functions
-	sf::RectangleShape getBody() { return tempBody; }
-	sf::Vector2f getVelocity() { return velocity; }
+	sf::Sprite getBody() { return m_body; }
+	sf::Vector2f getVelocity() { return m_velocity; }
 	void setVelocity(sf::Vector2f t_velocity);
 
 	// main functions
+	void loadSprite(); //function to load the sprite
 	void init(); //function to initalise the player
 	void move(); //function for the enemy to move
 	void respawn(); //function for when the enemy is killed
+	void changeDirection(); //function that changes the orientation of the enemy
 
 private:
-	sf::Texture bodyTexture; //body texture
-	sf::Sprite body; //sprite that uses the texture
-	sf::RectangleShape tempBody;
-	sf::Vector2f velocity; //speed at which the sprite moves
-	sf::Vector2f position; //position that the body is currently at
-	bool alive{ true }; //used to detect if the player was killed or not
+	sf::Texture m_bodyTexture; //body texture
+	sf::Sprite m_body; //sprite that uses the texture
+	sf::Vector2f m_velocity; //speed at which the sprite moves
+	sf::Vector2f m_lookDirection;
+
+	float health;
+	float speed;
+	float angle;
+
+	bool m_alive{ true }; //used to detect if the player was killed or not
 
 
 };
