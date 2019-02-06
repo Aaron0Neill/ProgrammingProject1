@@ -7,13 +7,13 @@
 
 
 Game::Game() :
-	m_window{ sf::VideoMode{ 800, 600, 32 }, "SFML Game" },
+	m_window{ sf::VideoMode{ 1000, 800, 32 }, "SFML Game" },
 	m_exitGame{ false }, //when true game will exit
 	m_currentState{ Splash } //sets the game to default to the splash screen
 {
 	setupFontAndText(); // load font 
 	setupSprite(); // load texture
-	m_playerView.setSize(sf::Vector2f{ 800,600 }); //sets the size of the camera
+	m_playerView.setSize(sf::Vector2f{ 1000,800 }); //sets the size of the camera
 }
 
 
@@ -68,7 +68,10 @@ void Game::processEvents()
 				if (sf::Keyboard::Space == event.key.code)
 				{
 					m_currentState = GamePlay;
-					m_asteroid.init();
+					for (int i = 0; i < TOTAL_ASTEROIDS; i++)
+					{
+						m_asteroids[i].init();
+					}
 					m_patrolEnemy.init();
 				}
 			}
@@ -91,7 +94,13 @@ void Game::update(sf::Time t_deltaTime)
 		m_playerView.setCenter(m_player.getPosition()); //sets the center of the camer to the players position
 		m_playerView.move(m_player.getVelocity()); //moves the window
 		m_player.checkPosition(); //checks to make sure the player isnt gone too far
-		m_patrolEnemy.move();
+		m_patrolEnemy.move(); //moves the enemy object
+		m_patrolEnemy.checkPosition(); //makes sure the enemy doesnt move off the screen
+		for (int i = 0; i < TOTAL_ASTEROIDS; i++)
+		{
+			m_asteroids[i].move(); //move the asteroid
+			m_asteroids[i].checkPosition(); //reset the asteroid if it leaves the screen
+		}
 	}
 	m_player.move(); //calls the function to move the playera
 	m_playerShield.update(m_player.getPosition()); //calls the function to update the shield
@@ -112,10 +121,15 @@ void Game::render()
 		m_window.draw(m_controls); //displays the keys used to move
 		m_window.draw(m_controlsText); //displays the text to explain the controls
 		m_window.draw(m_enemyText); //displays the information on the enemy
+		m_window.draw(m_player.playerHitBox1);
+		m_window.draw(m_patrolEnemy.enemyHitBox1);
 
 	}
 //	m_window.setView(m_playerView); //sets the view to be the player
-	m_window.draw(m_asteroid.getBody()); //draws the asteroid object
+	for (int i = 0; i < TOTAL_ASTEROIDS; i++)
+	{
+		m_window.draw(m_asteroids[i].getBody()); //draws the asteroid object
+	}
 	m_window.draw(m_patrolEnemy.getBody()); //draws the enemy object
 	m_window.draw(m_playerShield.getBody()); //draws the shield object
 	m_window.draw(m_player.getBody()); //draws the player object
@@ -162,7 +176,7 @@ void Game::setupFontAndText()
 	m_asteroidText.setCharacterSize(14);
 	m_asteroidText.setString("These are asteroids \nthat float through space \nThey will cause damage \nif you collide with them");
 	m_asteroidText.setOrigin(m_asteroidText.getGlobalBounds().width / 2.0, m_asteroidText.getGlobalBounds().height / 2.0);
-	m_asteroidText.setPosition(m_asteroid.getPosition().x , m_asteroid.getPosition().y + (m_asteroid.getBody().getGlobalBounds().height / 2.0));
+	m_asteroidText.setPosition(675,250);
 	m_asteroidText.setFillColor(m_textColour);
 
 	//controls text

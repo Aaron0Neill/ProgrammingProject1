@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "Globals.h"
 
 #pragma once
 class Asteroid
@@ -11,6 +12,7 @@ public:
 	void setupSplash();
 	void init();
 	void move();
+	void checkPosition();
 	inline sf::Sprite getBody() { return asteroid; }
 	inline sf::Vector2f getPosition() { return asteroid.getPosition(); }
 
@@ -22,6 +24,8 @@ private:
 	sf::Vector2f velocity; //speed at which the asteroid moves
 	float speed; //speed that the asteroid moves at
 	float health; // health of the asteroid
+	float rotation; //asteroid will rotate around the screen
+	int spawnSide; //which side the asteroid will spawn at
 
 	bool alive{ true }; //bool to tell if the asteroid is alive or not
 };

@@ -16,7 +16,6 @@ void Shield::init()
 	shield.setTexture(shieldTexture); //assigns the texture
 	shield.setOrigin(shield.getGlobalBounds().width / 2, shield.getGlobalBounds().height / 2); //sets the origin to the middle of the shield
 	shield.setColor(sf::Color(255, 255, 255, health)); //gives it a colour with a variable for the oppacity
-//	shield.scale(0.7f, 0.7f);
 }
 
 void Shield::update(sf::Vector2f t_pos)

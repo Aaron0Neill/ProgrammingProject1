@@ -5,6 +5,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "MyVector2.h"
+#include "Globals.h"
 #include <cstdlib>
 #include <time.h>
 #include <math.h>
@@ -25,7 +26,11 @@ public:
 	void init(); //function to initalise the player
 	void move(); //function for the enemy to move
 	void respawn(); //function for when the enemy is killed
+	void checkPosition(); //function that checks to make sure the enemy doesnt go off the boundaries of the screen
 	void changeDirection(); //function that changes the orientation of the enemy
+
+	//improved hitbox
+	sf::RectangleShape enemyHitBox1;
 
 private:
 	sf::Texture m_bodyTexture; //body texture

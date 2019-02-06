@@ -8,6 +8,7 @@
 #include "PlayerSpaceShip.h"
 #include "Shield.h"
 #include "MyVector2.h"
+#include "Globals.h"
 
 class Game
 {
@@ -42,7 +43,7 @@ private:
 	PatrolEnemy m_patrolEnemy; //patrol enemy object
 	Shield m_playerShield; //players shield
 	Shield m_enemyShield; //patrol enemy shield
-	Asteroid m_asteroid; //asteroid object
+	Asteroid m_asteroids[TOTAL_ASTEROIDS]; //asteroid object
 
 	sf::View m_playerView; //camera that follows the player
 	sf::RenderWindow m_window; //main render window

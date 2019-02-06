@@ -18,6 +18,10 @@ void PlayerSpaceShip::loadImage()
 	body.setTexture(bodyTexture); //setup the sprite
 	body.setOrigin(body.getGlobalBounds().width / 2, body.getGlobalBounds().height / 2); //set the origin to the middle
 	body.setPosition(400, 300);
+
+	playerHitBox1.setSize(sf::Vector2f{ 80,100 }); //sets it to the size i want
+	playerHitBox1.setOrigin(40, 50);
+	playerHitBox1.setPosition(body.getPosition());
 }
 
 /// <summary>
@@ -47,6 +51,7 @@ void PlayerSpaceShip::move()
 		lookDirection = velocity;
 	}
 	body.move(velocity);
+	playerHitBox1.setPosition(body.getPosition());
 	changeDirection();
 	velocity = sf::Vector2f(0, 0);
 }
@@ -81,33 +86,41 @@ void PlayerSpaceShip::changeDirection()
 	if (lookDirection.x == 0 && lookDirection.y < 0)
 	{
 		body.setRotation(0);
+		playerHitBox1.setRotation(0);
 	}
 	else if (lookDirection.x > 0 && lookDirection.y < 0 )
 	{
 		body.setRotation(45);
+		playerHitBox1.setRotation(45);
 	}
 	else if (lookDirection.x > 0 && lookDirection.y == 0)
 	{
 		body.setRotation(90);
+		playerHitBox1.setRotation(90);
 	}
 	else if (lookDirection.x > 0 && lookDirection.y > 0)
 	{
 		body.setRotation(135);
+		playerHitBox1.setRotation(135);
 	}
 	else if (lookDirection.x == 0 && lookDirection.y > 0)
 	{
 		body.setRotation(180);
+		playerHitBox1.setRotation(180);
 	}
 	else if (lookDirection.x < 0 && lookDirection.y > 0)
 	{
 		body.setRotation(225);
+		playerHitBox1.setRotation(225);
 	}
 	else if (lookDirection.x < 0 && lookDirection.y == 0)
 	{
 		body.setRotation(270);
+		playerHitBox1.setRotation(270);
 	}
 	else if (lookDirection.x < 0 && lookDirection.y < 0)
 	{
 		body.setRotation(315);
+		playerHitBox1.setRotation(315);
 	}
 }

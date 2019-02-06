@@ -26,6 +26,9 @@ public:
 	void respawn();
 	void checkPosition();
 
+	sf::RectangleShape playerHitBox1; //used as a hit box for the player 
+	sf::RectangleShape playerHitBox2; 
+
 private:
 	sf::Texture bodyTexture; //body texture
 	sf::Sprite body; //sprite that uses the texture
