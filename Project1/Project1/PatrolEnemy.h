@@ -29,7 +29,6 @@ public:
 	void checkPosition(); //function that checks to make sure the enemy doesnt go off the boundaries of the screen
 	void changeDirection(); //function that changes the orientation of the enemy
 
-
 private:
 	sf::Texture m_bodyTexture; //body texture
 	sf::Sprite m_body; //sprite that uses the texture

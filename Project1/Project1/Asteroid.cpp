@@ -34,23 +34,23 @@ void Asteroid::move()
 {
 	if (spawnSide == TOP)
 	{//make the asteroid move down faster than anything
-		velocity.x = rand() % 5 + 1;
-		velocity.y = rand() % 5 + 4;
+		velocity.x = rand() % 3 + 1;
+		velocity.y = rand() % 3 + 3;
 	}
 	else if (spawnSide == BOTTOM)
 	{//make the asteroid move up
-		velocity.x = rand() % 5 + 1;
-		velocity.y = rand() % 5 - 5;
+		velocity.x = rand() % 3 + 1;
+		velocity.y = rand() % 3 - 4;
 	}
 	else if (spawnSide == RIGHT)
 	{//make the asteroid move left
-		velocity.x = rand() % 5 - 5;
-		velocity.y = rand() % 5 + 1;
+		velocity.x = rand() % 3 - 4;
+		velocity.y = rand() % 3 + 1;
 	}
 	else if (spawnSide == LEFT)
 	{//make the asteroid move right
-		velocity.x = rand() % 5 + 4;
-		velocity.y = rand() % 5 + 1;
+		velocity.x = rand() % 3 + 3;
+		velocity.y = rand() % 3 + 1;
 	}
 	asteroid.move(velocity);
 }

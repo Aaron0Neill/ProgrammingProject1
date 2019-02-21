@@ -40,7 +40,7 @@ private:
 	Shield m_playerShield; //players shield
 	Shield m_enemyShield; //patrol enemy shield
 	Asteroid m_asteroids[TOTAL_ASTEROIDS]; //asteroid array
-	Bullet m_bullets; //bullet array 
+	Bullet m_playerBullets[TOTAL_BULLETS]; //bullet array 
 
 	sf::View m_playerView; //camera that follows the player
 	sf::RenderWindow m_window; //main render window
@@ -68,7 +68,6 @@ private:
 
 	sf::RectangleShape onScreenArea;
 
-	int bulletCooldown{ 0 };
 	bool m_exitGame; // control exiting game
 
 };

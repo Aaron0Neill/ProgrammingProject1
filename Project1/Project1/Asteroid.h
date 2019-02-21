@@ -27,6 +27,5 @@ private:
 	float rotation; //asteroid will rotate around the screen
 	int spawnSide; //which side the asteroid will spawn at
 
-	bool alive{ true }; //bool to tell if the asteroid is alive or not
 };
 

@@ -48,7 +48,7 @@ void Game::run()
 void Game::processEvents()
 {
 	sf::Event event;
-	while (m_window.pollEvent(event))
+  	while (m_window.pollEvent(event))
 	{
 		if ( sf::Event::Closed == event.type) // window message
 		{
@@ -82,7 +82,10 @@ void Game::processEvents()
 			{
 				if (sf::Keyboard::Space == event.key.code)
 				{
-					m_bullets.init(m_player.getPosition(), m_player.getDirection());
+					for (int i = 0; i < TOTAL_BULLETS; i++)
+					{
+ 						m_playerBullets[i].init(m_player.getPosition(), m_player.getDirection());
+ 					}
 				}
 			}
 		}
@@ -112,8 +115,12 @@ void Game::update(sf::Time t_deltaTime)
 			m_asteroids[i].move(); //move the asteroid
 			m_asteroids[i].checkPosition(); //reset the asteroid if it leaves the screen
 		}
-		m_bullets.move(); //moves the bullets 
-		m_bullets.checkPos(); //checks if the bullets leave the screen
+		for (int i = 0; i < TOTAL_BULLETS; i++)
+		{
+			m_playerBullets[i].move(); //moves the bullets 
+			m_playerBullets[i].checkPos(); //checks if the bullets leave the screen
+		}
+		collisionDetection(); //checks if any objects collide
 	}
 	m_playerShield.update(m_player.getPosition()); //calls the function to update the shield
 }
@@ -139,7 +146,10 @@ void Game::render()
 	{
 		m_window.draw(m_asteroids[i].getBody()); //draws the asteroid object
 	}
-	m_bullets.draw(m_window);
+	for (int i = 0; i < TOTAL_BULLETS; i++)
+	{
+		m_window.draw(m_playerBullets[i].getBody());
+	}
 	m_window.draw(m_patrolEnemy.getBody()); //draws the enemy object
 	m_window.draw(m_playerShield.getBody()); //draws the shield object
 	m_window.draw(m_player.getBody()); //draws the player object
@@ -238,7 +248,17 @@ void Game::setupSprite()
 
 void Game::collisionDetection()
 {
-
+	for (int i = 0; i < TOTAL_ASTEROIDS; i++)
+	{
+		for (int j = 0; j < TOTAL_BULLETS; j++)
+		{
+			if (m_playerBullets[j].getBody().getGlobalBounds().intersects(m_asteroids[i].getBody().getGlobalBounds()))
+			{
+				m_asteroids[i].init();
+				m_playerBullets[j].despawn();
+			}
+		}
+	}
 }
 
 

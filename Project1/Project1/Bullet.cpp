@@ -4,85 +4,72 @@
 
 Bullet::Bullet()
 {
-	for (int i = 0; i < TOTAL_BULLETS; i++)
-	{
-		m_body[i].setFillColor(sf::Color::Yellow);
-		m_body[i].setSize(sf::Vector2f{ 20,20 });
-		m_body[i].setPosition(2000, 0);
-		m_alive[i] = false;
-		m_velocity[i].x = 0;
-		m_velocity[i].y = 0;
-	}
+	m_body.setFillColor(sf::Color::Yellow);
+	m_body.setSize(sf::Vector2f{ 20,20 });
+	m_body.setPosition(2000, 0);
 }
 
+/// <summary>
+/// function to move the bullet when it is on the screen
+/// </summary>
 void Bullet::move()
 {
 	if (waitToFire > 0)
 	{
 		waitToFire--;
 	}
-	for (int i = 0; i < TOTAL_BULLETS; i++)
+	if(m_body.getPosition().x != 2000)
 	{
-		if(m_body[i].getPosition().x != 2000)
-		{
-// 			m_bullet.move(m_velocity);
-			m_body[i].move(m_velocity[i]);
-		}
+//		m_bullet.move(m_velocity);
+		m_body.move(m_velocity);
 	}
 }
 
+/// <summary>
+/// function to check if the bullet has gone off the screen
+/// </summary>
 void Bullet::checkPos()
 {
-	for (int i = 0; i < TOTAL_BULLETS; i++)
+	if (m_body.getPosition().x != 2000)
 	{
-		if (m_body[i].getPosition().x != 2000)
+		sf::Vector2f pos = m_body.getPosition();
+		if (pos.x < -10 || pos.x > SCREEN_WIDTH + 10 || pos.y < -10 || pos.y > SCREEN_HEIGHT + 10)
 		{
-			sf::Vector2f pos = m_body[i].getPosition();
-			if (pos.x < -10 || pos.x > SCREEN_WIDTH + 10 || pos.y < -10 || pos.y > SCREEN_HEIGHT + 10)
-			{
-				m_body[i].setPosition(2000, 0);
-				aliveBullets--;
-			}
-		}	
-	}
-}
-
-void Bullet::init(sf::Vector2f t_pos, sf::Vector2f t_lookDirection)
-{
-	if (waitToFire <= 0 && aliveBullets <= TOTAL_BULLETS)
-	{
-		for (int i = 0; i < TOTAL_BULLETS; i++)
-		{
-			if (m_body[i].getPosition().x == 2000)
-			{
-				m_alive[i] = true;
-				m_body[i].setPosition(t_pos);
-				m_velocity[i].x = t_lookDirection.x * 2;
-				m_velocity[i].y = t_lookDirection.y * 2;
-				aliveBullets++;
-				waitToFire = 10;
-				std::cout << aliveBullets << std::endl;
-				break;
-			}
+			m_body.setPosition(2000, 0);
+			aliveBullets--;
 		}
 	}
 }
 
-void Bullet::draw(sf::RenderWindow &m_window)
+/// <summary>
+/// function used to initalize the bullets
+/// </summary>
+/// <param name="t_pos">position of the boject that fired it</param>
+/// <param name="t_lookDirection"> direction said object is moving</param>
+void Bullet::init(sf::Vector2f t_pos, sf::Vector2f t_lookDirection)
 {
 	if (aliveBullets <= TOTAL_BULLETS)
 	{
-		for (int i = 0; i < TOTAL_BULLETS; i++)
+		if (waitToFire <= 0)
 		{
-			m_window.draw(m_body[i]);
+			if (m_body.getPosition().x == 2000)
+			{
+				m_body.setPosition(t_pos);
+				m_velocity.x = t_lookDirection.x * 2;
+				m_velocity.y = t_lookDirection.y * 2;
+				aliveBullets++;
+				waitToFire = 60;
+			}
 		}
 	}
 }
 
-sf::RectangleShape Bullet::getBody()
+/// <summary>
+/// function used to despawn the bullets after they collide with something
+/// </summary>
+void Bullet::despawn()
 {
-	for (int i = 0; i < TOTAL_BULLETS; i++)
-	{
-		return m_body[i];
-	}
+	m_velocity = sf::Vector2f{ 0,0 };
+	m_body.setPosition(2000, 0);
+	aliveBullets--;
 }
