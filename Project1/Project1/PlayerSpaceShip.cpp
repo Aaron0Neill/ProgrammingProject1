@@ -17,11 +17,7 @@ void PlayerSpaceShip::loadImage()
 	}
 	body.setTexture(bodyTexture); //setup the sprite
 	body.setOrigin(body.getGlobalBounds().width / 2, body.getGlobalBounds().height / 2); //set the origin to the middle
-	body.setPosition(400, 300);
-
-	playerHitBox1.setSize(sf::Vector2f{ 80,100 }); //sets it to the size i want
-	playerHitBox1.setOrigin(40, 50);
-	playerHitBox1.setPosition(body.getPosition());
+	body.setPosition(SCREEN_WIDTH / 2.0, SCREEN_WIDTH / 2.0);
 }
 
 /// <summary>
@@ -29,6 +25,7 @@ void PlayerSpaceShip::loadImage()
 /// </summary>
 void PlayerSpaceShip::move()
 {
+	velocity = sf::Vector2f(0, 0);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
 		velocity.y = -speed;
@@ -47,13 +44,10 @@ void PlayerSpaceShip::move()
 	}
 	if (vectorLength(velocity) != 0)
 	{
-		std::cout << getPosition().x << " , " << getPosition().y << std::endl;
 		lookDirection = velocity;
 	}
 	body.move(velocity);
-	playerHitBox1.setPosition(body.getPosition());
 	changeDirection();
-	velocity = sf::Vector2f(0, 0);
 }
 
 /// <summary>
@@ -63,7 +57,7 @@ void PlayerSpaceShip::init()
 {
 	lives = 2; // gives the player two lives to start off
 	health = 100; //the player starts with 100 health 
-	speed = 5; //default speed of the player
+	speed = 3; //default speed of the player
 }
 
 /// <summary>
@@ -73,54 +67,70 @@ void PlayerSpaceShip::respawn()
 {
 }
 
+/// <summary>
+/// function to check where the player is on the screen and respond accordingly
+/// </summary>
 void PlayerSpaceShip::checkPosition()
 {
-	if (getPosition().x < -600 || getPosition().x > 1400 || getPosition().y < -700 || getPosition().y > 1300)
+	if (getPosition().x < 0) //if the player goes to the left of the screen
+	{
+		body.setPosition(SCREEN_WIDTH, getPosition().y); //moves the player to the right of the screen
+	}
+	else if (getPosition().x > SCREEN_WIDTH) //if the player goes to the right of the screen
+	{
+		body.setPosition(0, getPosition().y); //sets the player to the left of the screen
+	}
+	if (getPosition().y < 0) //if the player hits the top of the screen
+	{
+		body.setPosition(getPosition().x, SCREEN_HEIGHT); //sets the player to the bottom of the screen
+	}
+	if (getPosition().y > SCREEN_HEIGHT) //if the player hits the bottom of the screen
+	{
+		body.setPosition(getPosition().x, 0); //sets the player to the top of the screen
+	}
+	//testing an idea
+	/*if (getPosition().x < -600 || getPosition().x > 1400 || getPosition().y < -700 || getPosition().y > 1300)
 	{
 		body.setPosition(400, 300);
-	}
+	}*/
+
 }
 
+/// <summary>
+/// function to change the orientation of the ship depending on the way it is moving
+/// </summary>
 void PlayerSpaceShip::changeDirection()
 {
 	if (lookDirection.x == 0 && lookDirection.y < 0)
 	{
 		body.setRotation(0);
-		playerHitBox1.setRotation(0);
 	}
 	else if (lookDirection.x > 0 && lookDirection.y < 0 )
 	{
 		body.setRotation(45);
-		playerHitBox1.setRotation(45);
 	}
 	else if (lookDirection.x > 0 && lookDirection.y == 0)
 	{
 		body.setRotation(90);
-		playerHitBox1.setRotation(90);
 	}
 	else if (lookDirection.x > 0 && lookDirection.y > 0)
 	{
 		body.setRotation(135);
-		playerHitBox1.setRotation(135);
 	}
 	else if (lookDirection.x == 0 && lookDirection.y > 0)
 	{
 		body.setRotation(180);
-		playerHitBox1.setRotation(180);
 	}
 	else if (lookDirection.x < 0 && lookDirection.y > 0)
 	{
 		body.setRotation(225);
-		playerHitBox1.setRotation(225);
 	}
 	else if (lookDirection.x < 0 && lookDirection.y == 0)
 	{
 		body.setRotation(270);
-		playerHitBox1.setRotation(270);
 	}
 	else if (lookDirection.x < 0 && lookDirection.y < 0)
 	{
 		body.setRotation(315);
-		playerHitBox1.setRotation(315);
 	}
 }

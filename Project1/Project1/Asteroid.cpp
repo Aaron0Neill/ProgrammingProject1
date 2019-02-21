@@ -75,5 +75,5 @@ void Asteroid::setupSplash()
 	}
 	asteroid.setTexture(asteroidTexture); //sets the texture of the asteroid
 	asteroid.setOrigin(asteroid.getGlobalBounds().width / 2, asteroid.getGlobalBounds().height / 2); //sets the origin to the middle of the sprite
-	asteroid.setPosition(675, 125); //sets the asteroids position
+	asteroid.setPosition(SCREEN_WIDTH - 125, 125); //sets the asteroids position
 }

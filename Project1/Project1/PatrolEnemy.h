@@ -29,8 +29,6 @@ public:
 	void checkPosition(); //function that checks to make sure the enemy doesnt go off the boundaries of the screen
 	void changeDirection(); //function that changes the orientation of the enemy
 
-	//improved hitbox
-	sf::RectangleShape enemyHitBox1;
 
 private:
 	sf::Texture m_bodyTexture; //body texture

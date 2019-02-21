@@ -31,10 +31,6 @@ void PatrolEnemy::loadSprite()
 	m_body.setOrigin(m_body.getGlobalBounds().width / 2.0, m_body.getGlobalBounds().height / 2.0);
 	m_body.setPosition(175, 250);
 
-	//setup for the hitboxes
-	enemyHitBox1.setSize(sf::Vector2f{ 60,100 }); //sets the size
-	enemyHitBox1.setOrigin(30, 50); //middle of the hitbox
-	enemyHitBox1.setPosition(m_body.getPosition());
 }
 
 /// <summary>
@@ -55,7 +51,6 @@ void PatrolEnemy::init()
 void PatrolEnemy::move()
 {
 	m_body.move(m_velocity); //moves the body by the velocity
-	enemyHitBox1.setPosition(m_body.getPosition());
 	if (vectorLength(m_velocity) != 0) //checks to make sure the player spaceship is moving
 	{
 //		m_lookDirection = m_velocity;
@@ -102,7 +97,7 @@ void PatrolEnemy::changeDirection()
 	angle = (atan2(m_velocity.y, m_velocity.x))* (180 / 3.1415926); //gets the angle of the velocity 
 	angle += 90; //adds 90 to get the orientation correct for the ship
 	m_body.setRotation(angle); //sets the rotation of the ship to be the direction of the ship
-	enemyHitBox1.setRotation(angle);
+	
 }
 
 // up is -90

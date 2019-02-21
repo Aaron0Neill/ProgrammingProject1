@@ -9,6 +9,7 @@
 #include "Shield.h"
 #include "MyVector2.h"
 #include "Globals.h"
+#include "Bullet.h"
 
 class Game
 {
@@ -20,12 +21,6 @@ public:
 
 private:
 	//enum for what state the game is in
-	enum GameState
-	{
-		Splash,
-		GamePlay,
-		End
-	};
 
 	//main update loop
 	void processEvents();
@@ -36,6 +31,7 @@ private:
 	void setupFontAndText();
 	void setupSprite();
 
+	void collisionDetection();
 	//game states and objects
 	GameState m_currentState;
 
@@ -43,7 +39,8 @@ private:
 	PatrolEnemy m_patrolEnemy; //patrol enemy object
 	Shield m_playerShield; //players shield
 	Shield m_enemyShield; //patrol enemy shield
-	Asteroid m_asteroids[TOTAL_ASTEROIDS]; //asteroid object
+	Asteroid m_asteroids[TOTAL_ASTEROIDS]; //asteroid array
+	Bullet m_bullets; //bullet array 
 
 	sf::View m_playerView; //camera that follows the player
 	sf::RenderWindow m_window; //main render window
@@ -69,6 +66,9 @@ private:
 	//colour of the text
 	sf::Color m_textColour = sf::Color::Yellow; //used to control the colour of all text objects
 
+	sf::RectangleShape onScreenArea;
+
+	int bulletCooldown{ 0 };
 	bool m_exitGame; // control exiting game
 
 };

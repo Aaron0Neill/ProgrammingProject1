@@ -4,6 +4,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "MyVector2.h"
+#include "Globals.h"
 #include <iostream>
 
 #pragma once
@@ -15,6 +16,7 @@ public:
 	//all the set and get functions
 	sf::Sprite getBody() { return body; }
 	sf::Vector2f getVelocity() { return velocity; }
+	sf::Vector2f getDirection() { return lookDirection; }
 	sf::Vector2f getPosition() { return body.getPosition(); }
 
 
@@ -26,14 +28,12 @@ public:
 	void respawn();
 	void checkPosition();
 
-	sf::RectangleShape playerHitBox1; //used as a hit box for the player 
-	sf::RectangleShape playerHitBox2; 
 
 private:
 	sf::Texture bodyTexture; //body texture
 	sf::Sprite body; //sprite that uses the texture
 	sf::Vector2f velocity; //speed at which the sprite moves
-	sf::Vector2f lookDirection; //direction the spaceship is facing
+	sf::Vector2f lookDirection{ 1,0 }; //direction the spaceship is facing
 
 	float lives; //number of lives that the player has
 	float speed; //speed that the player can move at 

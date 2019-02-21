@@ -9,7 +9,7 @@
 Game::Game() :
 	m_window{ sf::VideoMode{ 1000, 800, 32 }, "SFML Game" },
 	m_exitGame{ false }, //when true game will exit
-	m_currentState{ Splash } //sets the game to default to the splash screen
+	m_currentState{ GameState::splashScreen } //sets the game to default to the splash screen
 {
 	setupFontAndText(); // load font 
 	setupSprite(); // load texture
@@ -36,8 +36,8 @@ void Game::run()
 			timeSinceLastUpdate -= timePerFrame;
 			processEvents(); // at least 60 fps
 			update(timePerFrame); //60 fps
+			render(); // as many as possible
 		}
-		render(); // as many as possible
 	}
 }
 /// <summary>
@@ -61,18 +61,28 @@ void Game::processEvents()
 				m_exitGame = true;
 			}
 		}
-		if (m_currentState == Splash)
+		if (m_currentState == GameState::splashScreen)
 		{
 			if (sf::Event::KeyPressed == event.type)
 			{
 				if (sf::Keyboard::Space == event.key.code)
 				{
-					m_currentState = GamePlay;
+					m_currentState = GameState::gamePlay;
 					for (int i = 0; i < TOTAL_ASTEROIDS; i++)
 					{
 						m_asteroids[i].init();
 					}
 					m_patrolEnemy.init();
+				}
+			}
+		}
+		else
+		{
+			if (sf::Event::KeyPressed == event.type)
+			{
+				if (sf::Keyboard::Space == event.key.code)
+				{
+					m_bullets.init(m_player.getPosition(), m_player.getDirection());
 				}
 			}
 		}
@@ -89,10 +99,11 @@ void Game::update(sf::Time t_deltaTime)
 	{
 		m_window.close();
 	}
-	if (m_currentState == GamePlay)
+	if (m_currentState == GameState::gamePlay)
 	{
 		m_playerView.setCenter(m_player.getPosition()); //sets the center of the camer to the players position
 		m_playerView.move(m_player.getVelocity()); //moves the window
+		m_player.move(); //calls the function to move the playera
 		m_player.checkPosition(); //checks to make sure the player isnt gone too far
 		m_patrolEnemy.move(); //moves the enemy object
 		m_patrolEnemy.checkPosition(); //makes sure the enemy doesnt move off the screen
@@ -101,8 +112,9 @@ void Game::update(sf::Time t_deltaTime)
 			m_asteroids[i].move(); //move the asteroid
 			m_asteroids[i].checkPosition(); //reset the asteroid if it leaves the screen
 		}
+		m_bullets.move(); //moves the bullets 
+		m_bullets.checkPos(); //checks if the bullets leave the screen
 	}
-	m_player.move(); //calls the function to move the playera
 	m_playerShield.update(m_player.getPosition()); //calls the function to update the shield
 }
 
@@ -113,7 +125,7 @@ void Game::render()
 {
 	m_window.clear();
 	m_window.draw(m_background); //draws the background
-	if (m_currentState == Splash) //checks what state the game is in
+	if (m_currentState == GameState::splashScreen) //checks what state the game is in
 	{
 		m_window.draw(m_title); //displays the title
 		m_window.draw(m_asteroidText); //displays the informational text
@@ -121,15 +133,13 @@ void Game::render()
 		m_window.draw(m_controls); //displays the keys used to move
 		m_window.draw(m_controlsText); //displays the text to explain the controls
 		m_window.draw(m_enemyText); //displays the information on the enemy
-		m_window.draw(m_player.playerHitBox1);
-		m_window.draw(m_patrolEnemy.enemyHitBox1);
-
 	}
 //	m_window.setView(m_playerView); //sets the view to be the player
 	for (int i = 0; i < TOTAL_ASTEROIDS; i++)
 	{
 		m_window.draw(m_asteroids[i].getBody()); //draws the asteroid object
 	}
+	m_bullets.draw(m_window);
 	m_window.draw(m_patrolEnemy.getBody()); //draws the enemy object
 	m_window.draw(m_playerShield.getBody()); //draws the shield object
 	m_window.draw(m_player.getBody()); //draws the player object
@@ -158,7 +168,7 @@ void Game::setupFontAndText()
 	m_title.setCharacterSize(32); //sets the size of the text
 	m_title.setString("Space Survival"); //sets the string for the splash screen
 	m_title.setOrigin(m_title.getGlobalBounds().width / 2, m_title.getGlobalBounds().height / 2); //sets the origin of the text to the middle
-	m_title.setPosition(400, 100); //sets the position to slightly above the middle of the screen
+	m_title.setPosition(SCREEN_WIDTH / 2.0, 100); //sets the position to slightly above the middle of the screen
 	m_title.setFillColor(m_textColour);
 
 	//continue text
@@ -167,7 +177,7 @@ void Game::setupFontAndText()
 	m_continueText.setCharacterSize(24);
 	m_continueText.setString("Press Space to continue");
 	m_continueText.setOrigin(m_continueText.getGlobalBounds().width / 2, m_continueText.getGlobalBounds().height / 2);
-	m_continueText.setPosition(400, 500);
+	m_continueText.setPosition(SCREEN_WIDTH /2.0, SCREEN_HEIGHT -200);
 	m_continueText.setFillColor(m_textColour);
 
 	//instructional asteroid text
@@ -176,7 +186,7 @@ void Game::setupFontAndText()
 	m_asteroidText.setCharacterSize(14);
 	m_asteroidText.setString("These are asteroids \nthat float through space \nThey will cause damage \nif you collide with them");
 	m_asteroidText.setOrigin(m_asteroidText.getGlobalBounds().width / 2.0, m_asteroidText.getGlobalBounds().height / 2.0);
-	m_asteroidText.setPosition(675,250);
+	m_asteroidText.setPosition(SCREEN_WIDTH - 125,250);
 	m_asteroidText.setFillColor(m_textColour);
 
 	//controls text
@@ -185,7 +195,7 @@ void Game::setupFontAndText()
 	m_controlsText.setCharacterSize(14);
 	m_controlsText.setString("These are the keys\nyou use to move\nup, down, left and right\nuse the spacebar to fire");
 	m_controlsText.setOrigin(m_controlsText.getGlobalBounds().width / 2.0, m_controlsText.getGlobalBounds().height / 2.0);
-	m_controlsText.setPosition(675,450);
+	m_controlsText.setPosition(SCREEN_WIDTH - 125,SCREEN_HEIGHT / 2.0 + 50);
 	m_controlsText.setFillColor(m_textColour);
 
 	//enemy text
@@ -220,7 +230,15 @@ void Game::setupSprite()
 	}
 	m_controls.setTexture(m_controlsTexture);
 	m_controls.setOrigin(m_controls.getGlobalBounds().width / 2.0, m_controls.getGlobalBounds().height / 2.0);
-	m_controls.setPosition(650, 350);
+	m_controls.setPosition(SCREEN_WIDTH - 150, 350);
+	
+	onScreenArea.setSize(sf::Vector2f{ m_window.getSize() });
+
+}
+
+void Game::collisionDetection()
+{
+
 }
 
 
